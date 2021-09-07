@@ -25,7 +25,8 @@ function selectFromInterval(NumbersArr, startNum, endNum) {
         if (startNum > endNum) {
             [startNum, endNum] = [endNum, startNum];
         }
-        return resultArr = NumbersArr.filter(item => item >= startNum && item <= endNum);
+        const resultArr = NumbersArr.filter(item => item >= startNum && item <= endNum);
+        return resultArr;
     } else {
         throw new Error('Ошибка!');
     }
