@@ -1,25 +1,14 @@
 Array.prototype.myFilter = function(callback, thisArg) {
-    if (this == null) {
-        throw new Error("Cant iterate undefined or null");
-    };
-    if (typeof callback !== "function") {
-        throw new Error("Callback is not a function");
-    };
-    let arg = this;
-    if (arguments.length > 1) {
-        arg = thisArg;
-    }
-    let objThis = Object(this);
     let result = [];
-    for (let i = 0; i < objThis.length; i++) {
-        if (i in objThis) {
-            if (callback.call(arg, objThis[i], i, objThis)) {
-                result.push(objThis[i]);
-            }
-        }  
-    }
+    this.map(function(current, index, arr) {
+        if(callback.call(thisArg, current, index, arr)) {
+            result.push(current);
+        }
+        return result;
+    });
     return result;
-}
+};
+
 
 
 
@@ -30,9 +19,12 @@ function createDebounceFunction(callback, delay) {
             clearTimeout(timer);
             timer = false;
         }
+        const fnCall = () => { callback.apply(this, arguments) }
         timer = setTimeout(() => {
-            callback();
-            timer = false
+            timer = setTimeout(fnCall, delay);
+            timer = false;
         }, delay);
     };
 }
+
+
