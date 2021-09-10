@@ -7,8 +7,7 @@ Array.prototype.myFilter = function(callback, thisArg) {
         return result;
     });
     return result;
-};
-
+}
 
 
 function createDebounceFunction(callback, delay) {
