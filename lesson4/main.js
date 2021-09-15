@@ -49,7 +49,7 @@ class Calculator {
         if (typeof(num) !== 'number') {
             throw new Error('Add corrected param');
         }
-        return this.first = num;
+        console.log(this.first = num);
     }
     setY = (num) => {
         if (!num || num === Infinity || num === -Infinity) {
@@ -58,22 +58,22 @@ class Calculator {
         if (typeof(num) !== 'number') {
             throw new Error('Add corrected param');
         }
-        return this.second = num;
+        console.log(this.second = num);
     }
     logSum = () => {
-        return this.first + this.second;
+        console.log(this.first + this.second);
     }
     logMul = () => {
-        return this.first * this.second;
+        console.log(this.first * this.second);
     }
     logSub = () => {
-        return this.first - this.second;
+        console.log(this.first - this.second);
     }
     logDiv = () => {
         if (this.second === 0) {
             throw new Error('Сannot be divisible by 0');
         }
-        return this.first / this.second;
+        console.log(this.first / this.second);
     }
 
 }
