@@ -3,112 +3,112 @@ class Stack {
     constructor(length) {
         if (length || length === 0) {
             this.length = length;
-        } else {
-            this.length = 10;
         }
-        this.next = null;
-        this.head = null;
-        this.count = 0;
-        this.number = 0;
+        else this.length = 10;
+
         this.repository = {value: null};
+        this.next = null;
+
+        this.topElem = null;
+        this.count = 0;
+        this.size = 0;
+        
     }
 
     push(elem) {
-        if (!elem) {
-            throw new Error('No value');
-        }
-        if (this.number === this.length) {
+        if (this.size === this.length) {
             throw new Error('Maximum stack length reached');
         }
-        const call = (repository, n) => {
-            if (this.number === 0) {
+        const iteration = (repository) => {
+            if (this.size === 0) {
                 this.repository.value = elem;
                 this.repository.next = {};
-                this.number += 1;
-                this.head = elem;
+
+                this.size += 1;
+                this.topElem = elem;
                 return this.repository.value;
             }
-            if (this.count < this.number) {
+            if (this.count < this.size) {
                 this.count += 1;
-                return call(repository.next, this.count);
+                return iteration(repository.next);
             } else {
-                repository.value = elem;
+                repository.value = elem; 
                 repository.next = {};
-                this.number += 1;
+                this.size += 1;
                 this.count = 0;
-                this.head = elem;
+                this.topElem = elem;
                 return elem;
             }
         }
-        return call(this.repository, this.count);
+        return iteration(this.repository);
     }
 
     pop() {
-        if (this.number === 0) {
+        if (this.size === 0) {
             throw new Error('Stack is empty');
         }
-        const call = (repository, n) => {
-            if (this.number === 1) {
-                this.number -= 1;
+        const iteration = (repository) => {
+            if (this.size === 1) {
+                this.size -= 1;
                 return this.repository = {value: null};
             }
-            if ((this.count + 2) < this.number) {
+            if ((this.count + 2) < this.size) {
                 this.count += 1;
-                return call(repository.next, this.count);
+                return iteration(repository.next);
             } else {
-                let current = repository.next.value;
+                const current = repository.next.value;
                 repository.next = {};
-                this.number -= 1;
-                this.head = repository.value;
+                this.size -= 1;
+                this.topElem = repository.value;
                 this.count = 0;
                 return current;
             }
         }
-        return call(this.repository, this.count);
+        return iteration(this.repository);
     }
 
     peek() {
-        if (this.number === 0) {
+        if (this.size === 0) {
             return this.next;
+        } else {
+            return this.topElem;
         }
-        return this.head;
     }
 
     isEmpty() {
-        if (this.number === 0) {
+        if (this.size === 0) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     toArray() {
         let array = [];
-        if (this.number === 0) {
+        if (this.size === 0) {
             return array;
         }
-        const call = (repository, n) => {
-            if (n < this.number) {
+        const iteration = (repository) => {
+            if (this.count < this.size) {
                 array.push(repository.value);
                 this.count += 1;
-                return call(repository.next, this.count)
+                return iteration(repository.next)
             } else {
+                this.count = 0;
                 return array;
             }
         }
-        return call(this.repository, this.count);
+        return iteration(this.repository);
     }
 
     fromIterable(iterable) {
         if (iterable[Symbol.iterator]) {
             const callbackStack = new Stack(iterable.length);
-        for (let i of iterable) {
-            callbackStack.push(i);
+            for (let i of iterable) {
+                callbackStack.push(i);
+            }
+            return callbackStack;
         }
-        return callbackStack;
-        } else {
-            throw new Error('Entity is not iterable');
-        }
+        throw new Error('Entity is not iterable');
     }
 }
 
